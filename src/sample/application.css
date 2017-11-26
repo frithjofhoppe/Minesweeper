@@ -1,0 +1,46 @@
+.FieldButtonNotClicked{
+    -fx-min-width: 55;
+    -fx-pref-width: 55;
+    -fx-max-width: 55;
+
+    -fx-min-height: 55;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+    -fx-background-color: darkolivegreen;
+    -fx-border-color: white;
+    -fx-border-width: 5 5 5 5;
+}
+
+.FieldButtonClicked{
+    -fx-min-width: 55;
+    -fx-pref-width: 55;
+    -fx-max-width: 55;
+
+    -fx-min-height: 55;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+    -fx-background-color: lightgrey;
+}
+
+.FieldBomb{
+    -fx-min-width: 55;
+    -fx-pref-width: 55;
+    -fx-max-width: 55;
+
+    -fx-min-height: 55;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+    -fx-background-color: indianred;
+    -fx-border-color: darkred;
+    -fx-border-width: 5 5 5 5;
+}
+
+.ControlButton{
+    -fx-min-width: 150;
+    -fx-pref-width: 150;
+    -fx-max-width: 150;
+
+    -fx-min-height: 55;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+}
