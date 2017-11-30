@@ -1,4 +1,4 @@
-package sample;
+package application;
 
 import com.sun.istack.internal.Nullable;
 import javafx.scene.layout.HBox;
@@ -8,12 +8,16 @@ import java.util.Random;
 
 public class PlayField {
 
+    Launcher launcher;
     VBox playingField;
     int probability = 5;
     int dimensionOfField = 7;
+    int generatedBombs = 0;
+    int fieldCounter = 0;
 
-    public PlayField() {
+    public PlayField(Launcher launcher) {
         playingField = createPlayField(dimensionOfField, probability);
+        this.launcher = launcher;
     }
 
     VBox createPlayField(int expansion, int chance) {
@@ -27,6 +31,8 @@ public class PlayField {
 
                 if (getRandomNumber(chance) == 1) {
                     f = new Field(true);
+                    f.setText("b");
+                    generatedBombs++;
                 } else {
                     f = new Field(false);
                 }
@@ -44,6 +50,7 @@ public class PlayField {
             back.getChildren().add(line);
         }
 
+        System.out.println(Integer.toString(generatedBombs));
         return back;
     }
 
@@ -53,14 +60,34 @@ public class PlayField {
     }
 
     private void fieldListener(Field f) {
-        if (f.isBomb == false) {
-            f.getStyleClass().add("FieldButtonClicked");
-            f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
+        if(!f.isClicked) {
+            f.isClicked = true;
+            if (f.isBomb == false) {
+                f.getStyleClass().add("FieldButtonClicked");
+                f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
+            } else {
+                f.getStyleClass().add("FieldBomb");
+                launcher.finished();
+            }
+            fieldCounter++;
+            checkIfGameHasToFinish();
         }
-        else
+    }
+
+    private void checkIfGameHasToFinish() {
+        if(isPlayFinished())
         {
-            f.getStyleClass().add("FieldBomb");
+            launcher.finished();
         }
+    }
+
+    private boolean isPlayFinished()
+    {
+        if(fieldCounter >= (dimensionOfField*dimensionOfField - generatedBombs))
+        {
+            return true;
+        }
+        return false;
     }
 
     @Nullable
@@ -94,6 +121,11 @@ public class PlayField {
             //System.out.println("ERROR There is no row " + Integer.toString(index));
         }
         return null;
+    }
+
+    private void markField(Field field)
+    {
+
     }
 
     private int isBomb(int x, int y) {

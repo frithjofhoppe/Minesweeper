@@ -1,15 +1,17 @@
-package sample;
+package application;
 
 import javafx.scene.control.Button;
 
 public class Field extends Button {
     boolean isMarked;
     boolean isBomb;
+    boolean isClicked;
     int xPos;
     int yPos;
 
     Field(boolean isBomb) {
         this.isBomb = isBomb;
+        this.isClicked = false;
     }
 
     public boolean isMarked() {

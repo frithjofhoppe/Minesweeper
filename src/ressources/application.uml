@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>application</OriginalElement>
+  <nodes>
+    <node x="315.0" y="387.5">application.Message</node>
+    <node x="68.125" y="722.5">application.Launcher</node>
+    <node x="35.828125" y="0.0">application.Field</node>
+    <node x="0.0" y="224.0">application.PlayField</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="application.PlayField" target="application.Field">
+      <point x="73.75" y="-195.5" />
+      <point x="221.25" y="199.0" />
+      <point x="181.328125" y="199.0" />
+      <point x="48.5" y="87.0" />
+    </edge>
+    <edge source="application.Launcher" target="application.PlayField">
+      <point x="-42.0" y="-100.0" />
+      <point x="142.375" y="640.0" />
+      <point x="110.625" y="640.0" />
+      <point x="-36.875" y="195.5" />
+    </edge>
+    <edge source="application.PlayField" target="application.Launcher">
+      <point x="110.625" y="195.5" />
+      <point x="258.125" y="640.0" />
+      <point x="226.375" y="640.0" />
+      <point x="42.0" y="-100.0" />
+    </edge>
+    <edge source="application.Launcher" target="application.Message">
+      <point x="84.0" y="-100.0" />
+      <point x="268.375" y="640.0" />
+      <point x="417.5" y="640.0" />
+      <point x="0.0" y="32.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="415.375" y="503.875" />
+  <SelectedNodes>
+    <node>application.Launcher</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
