@@ -8,14 +8,14 @@ import java.util.Random;
 
 public class PlayField {
 
-    Launcher launcher;
+    MineSweeper launcher;
     VBox playingField;
     int probability = 5;
     int dimensionOfField = 7;
     int generatedBombs = 0;
     int fieldCounter = 0;
 
-    public PlayField(Launcher launcher) {
+    public PlayField(MineSweeper launcher) {
         playingField = createPlayField(dimensionOfField, probability);
         this.launcher = launcher;
     }
