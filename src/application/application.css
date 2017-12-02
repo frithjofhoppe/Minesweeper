@@ -55,3 +55,7 @@
     -fx-pref-height: 55;
     -fx-max-height: 55;
 }
+
+.ControlBox {
+    -fx-padding: 20px;
+}

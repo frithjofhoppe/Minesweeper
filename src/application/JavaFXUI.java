@@ -4,11 +4,13 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -39,7 +41,7 @@ public class JavaFXUI implements MineSweeper {
         root = new BorderPane();
         PlayField pl = new PlayField(this,5);
         root.setCenter(pl.getPlayingField());
-        root.setBottom(sideBar());
+        root.setBottom(control());
         scene = new Scene(root, 400, 500);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -74,8 +76,10 @@ public class JavaFXUI implements MineSweeper {
         }
     }
 
-    public HBox sideBar() {
+    public HBox control() {
         HBox back = new HBox();
+        VBox spinnerBox = new VBox();
+        back.getStyleClass().add("ControlBox");
         Button restart = new Button();
         restart.setText("Restart");
         restart.setOnAction(e -> {
@@ -94,10 +98,16 @@ public class JavaFXUI implements MineSweeper {
 
         spinner.valueProperty().addListener(e -> {
             rebuild(spinner.getValue());
+
         });
 
         spinner.setValueFactory(valueFactory);
-        back.getChildren().add(spinner);
+
+        Label label = new Label("Level of Complemxity");
+
+        spinnerBox.getChildren().add(label);
+        spinnerBox.getChildren().add(spinner);
+        back.getChildren().add(spinnerBox);
         back.getChildren().add(restart);
         return back;
     }
