@@ -1,6 +1,10 @@
 package application;
 
 import com.sun.istack.internal.Nullable;
+import javafx.css.PseudoClass;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -15,7 +19,8 @@ public class PlayField {
     int generatedBombs = 0;
     int fieldCounter = 0;
 
-    public PlayField(MineSweeper launcher) {
+    public PlayField(MineSweeper launcher, int probability) {
+        this.probability = probability;
         playingField = createPlayField(dimensionOfField, probability);
         this.launcher = launcher;
     }
@@ -39,9 +44,18 @@ public class PlayField {
                 f.getStyleClass().add("FieldButtonNotClicked");
                 f.setyPos(a);
                 f.setxPos(b);
-
-                f.setOnAction(e -> {
-                    fieldListener(f);
+                f.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton() == MouseButton.PRIMARY) {
+                            defaultFieldListener(f);
+                        } else if (event.getButton() == MouseButton.SECONDARY) {
+                            if(!f.isClicked) {
+                                markFieldListener(f);
+                                System.out.println("marked");
+                            }
+                        }
+                    }
                 });
 
                 line.getChildren().add(f);
@@ -59,13 +73,28 @@ public class PlayField {
         return rnd.nextInt(max) + 1;
     }
 
-    private void fieldListener(Field f) {
-        if(!f.isClicked) {
+    private void markFieldListener(Field f) {
+        if (!f.isMarked) {
+            removeAllStyles(f);
+            f.getStyleClass().add("FieldButtonMarked");
+            f.isMarked = true;
+        } else {
+            removeAllStyles(f);
+            f.getStyleClass().add("FieldButtonNotClicked");
+            System.out.println(f.getStyle().toString());
+            f.isMarked = false;
+        }
+    }
+
+    private void defaultFieldListener(Field f) {
+        if (!f.isClicked) {
             f.isClicked = true;
             if (f.isBomb == false) {
+                removeAllStyles(f);
                 f.getStyleClass().add("FieldButtonClicked");
                 f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
             } else {
+                removeAllStyles(f);
                 f.getStyleClass().add("FieldBomb");
                 launcher.finished(false);
             }
@@ -75,16 +104,13 @@ public class PlayField {
     }
 
     private void checkIfGameHasToFinish() {
-        if(isPlayFinished())
-        {
+        if (isPlayFinished()) {
             launcher.finished(true);
         }
     }
 
-    private boolean isPlayFinished()
-    {
-        if(fieldCounter >= (dimensionOfField*dimensionOfField - generatedBombs))
-        {
+    private boolean isPlayFinished() {
+        if (fieldCounter >= (dimensionOfField * dimensionOfField - generatedBombs)) {
             return true;
         }
         return false;
@@ -123,8 +149,7 @@ public class PlayField {
         return null;
     }
 
-    private void markField(Field field)
-    {
+    private void markField(Field field) {
 
     }
 
@@ -152,5 +177,13 @@ public class PlayField {
         back += isBomb(x + 1, y);
 
         return back;
+    }
+
+    private void removeAllStyles(Field field)
+    {
+        //field.getStyleClass().remove("FieldButtonNotClicked");
+        field.getStyleClass().remove("FieldButtonClicked");
+        field.getStyleClass().remove("FieldButtonMarked");
+        field.getStyleClass().remove("FieldBomb");
     }
 }

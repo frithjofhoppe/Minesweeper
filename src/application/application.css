@@ -22,6 +22,17 @@
     -fx-background-color: lightgrey;
 }
 
+.FieldButtonMarked{
+    -fx-min-width: 55;
+    -fx-pref-width: 55;
+    -fx-max-width: 55;
+
+    -fx-min-height: 55;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+    -fx-background-color: gold;
+}
+
 .FieldBomb{
     -fx-min-width: 55;
     -fx-pref-width: 55;
