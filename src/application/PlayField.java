@@ -67,7 +67,7 @@ public class PlayField {
                 f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
             } else {
                 f.getStyleClass().add("FieldBomb");
-                launcher.finished();
+                launcher.finished(false);
             }
             fieldCounter++;
             checkIfGameHasToFinish();
@@ -77,7 +77,7 @@ public class PlayField {
     private void checkIfGameHasToFinish() {
         if(isPlayFinished())
         {
-            launcher.finished();
+            launcher.finished(true);
         }
     }
 

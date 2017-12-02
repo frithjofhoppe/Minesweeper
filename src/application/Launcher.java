@@ -1,11 +1,14 @@
 package application;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Launcher extends Application {
 
@@ -14,6 +17,17 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Platform.setImplicitExit(false);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                if (!Message.msgExitRequest()) {
+                    event.consume();
+                } else {
+                    Platform.exit();
+                }
+            }
+        });
         root = new BorderPane();
         PlayField pl = new PlayField(this);
         root.setCenter(pl.getPlayingField());
@@ -29,13 +43,23 @@ public class Launcher extends Application {
         launch(args);
     }
 
-    public  void finished()  {
-        PlayField pl = new PlayField(this);
-        root.setCenter(pl.getPlayingField());
+    public void finished(boolean isSuccessfullyFinished) {
+
+        if (!isSuccessfullyFinished) {
+            Message.msgInformation("BOMB", "You reached a bomb!!!");
+        } else {
+            Message.msgInformation("WIN", "You have win the game");
+        }
+
+        if (Message.msgPlayAgain()) {
+            PlayField pl = new PlayField(this);
+            root.setCenter(pl.getPlayingField());
+        } else {
+            Platform.exit();
+        }
     }
 
-    public VBox sideBar()
-    {
+    public VBox sideBar() {
         VBox back = new VBox();
         Button start = new Button();
         start.setText("Start");
