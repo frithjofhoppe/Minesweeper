@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,6 +28,7 @@ public class JavaFXUI implements MineSweeper {
     }
 
     private void start() {
+        primaryStage.getIcons().add(new Image("ressources/bombl.png"));
         Platform.setImplicitExit(false);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -47,7 +49,9 @@ public class JavaFXUI implements MineSweeper {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
+        primaryStage.setTitle("Microsoft - MineSweeper");
         primaryStage.show();
+        Message.msgInformation("Welcome to minesweeper","Left-mouse-button: mark a field \nRight-mouse-button: open a field");
     }
 
     public void rebuild(int probability)
@@ -104,7 +108,7 @@ public class JavaFXUI implements MineSweeper {
 
         spinner.setValueFactory(valueFactory);
 
-        Label label = new Label("Level of Complemxity");
+        Label label = new Label("Probability of bombs");
         Hyperlink hyperlink = new Hyperlink("Manual");
         hyperlink.setOnMouseClicked( e ->{
             try {

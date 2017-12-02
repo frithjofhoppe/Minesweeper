@@ -36,7 +36,6 @@ public class PlayField {
 
                 if (getRandomNumber(chance) == 1) {
                     f = new Field(true);
-                    f.setText("b");
                     generatedBombs++;
                 } else {
                     f = new Field(false);
