@@ -3,16 +3,16 @@ package application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.IOException;
+import java.net.URI;
 
 public class JavaFXUI implements MineSweeper {
 
@@ -79,6 +79,7 @@ public class JavaFXUI implements MineSweeper {
     public HBox control() {
         HBox back = new HBox();
         VBox spinnerBox = new VBox();
+        VBox buttonBox = new VBox();
         back.getStyleClass().add("ControlBox");
         Button restart = new Button();
         restart.setText("Restart");
@@ -104,11 +105,21 @@ public class JavaFXUI implements MineSweeper {
         spinner.setValueFactory(valueFactory);
 
         Label label = new Label("Level of Complemxity");
+        Hyperlink hyperlink = new Hyperlink("Manual");
+        hyperlink.setOnMouseClicked( e ->{
+            try {
+                java.awt.Desktop.getDesktop().browse(URI.create("https://en.wikipedia.org/wiki/Minesweeper_(video_game)#Overview"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
 
+        buttonBox.getChildren().add(restart);
+        buttonBox.getChildren().add(hyperlink);
         spinnerBox.getChildren().add(label);
         spinnerBox.getChildren().add(spinner);
         back.getChildren().add(spinnerBox);
-        back.getChildren().add(restart);
+        back.getChildren().add(buttonBox);
         return back;
     }
 }
