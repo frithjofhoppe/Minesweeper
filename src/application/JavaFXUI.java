@@ -20,6 +20,7 @@ public class JavaFXUI implements MineSweeper {
     Stage primaryStage;
     Scene scene;
     BorderPane root;
+    Spinner<Integer> spinner = new Spinner<Integer>();
 
     JavaFXUI(Stage primaryStage)
     {
@@ -61,6 +62,7 @@ public class JavaFXUI implements MineSweeper {
             probability = 5;
         }
 
+        spinner.getValueFactory().setValue(probability);
         PlayField pl = new PlayField(this,probability);
         root.setCenter(pl.getPlayingField());
     }
@@ -93,7 +95,7 @@ public class JavaFXUI implements MineSweeper {
         });
         restart.getStyleClass().add("ControlButton");
 
-        final Spinner<Integer> spinner = new Spinner<Integer>();
+
 
         final int initialValue = 5;
 
@@ -103,7 +105,6 @@ public class JavaFXUI implements MineSweeper {
 
         spinner.valueProperty().addListener(e -> {
             rebuild(spinner.getValue());
-
         });
 
         spinner.setValueFactory(valueFactory);

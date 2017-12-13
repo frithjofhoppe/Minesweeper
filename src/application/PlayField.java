@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.Random;
+import java.util.*;
 
 public class PlayField {
 
@@ -25,6 +25,39 @@ public class PlayField {
         this.launcher = launcher;
     }
 
+    private void openFields(int x, int y) {
+        boolean isRunning = true;
+        Field start = getFieldByPosition(x, y);
+        int xPos = x;
+        int yPos = y;
+        int range = 1;
+
+        while (isRunning) {
+            int count = (range * 4) + 4;
+            boolean isAllTimeBomb = true;
+
+            yPos -= range;
+
+            for (int a = 0; a < count; a++) {
+                Field actual = getFieldByPosition(xPos, yPos);
+                if(actual != null) {
+                    if (!actual.isBomb) {
+                        isAllTimeBomb = false;
+                        actual.setText(Integer.toString(getBombCount(actual.getxPos(), actual.getyPos())));
+                        fieldCounter++;
+                        checkIfGameHasToFinish();
+                    }
+                }
+            }
+
+            if (isAllTimeBomb) {
+                isRunning = false;
+            }
+
+            range += 2;
+        }
+    }
+
     VBox createPlayField(int expansion, int chance) {
         VBox back = new VBox();
 
@@ -36,6 +69,7 @@ public class PlayField {
 
                 if (getRandomNumber(chance) == 1) {
                     f = new Field(true);
+                    f.setText("b");
                     generatedBombs++;
                 } else {
                     f = new Field(false);
@@ -49,7 +83,7 @@ public class PlayField {
                         if (event.getButton() == MouseButton.PRIMARY) {
                             defaultFieldListener(f);
                         } else if (event.getButton() == MouseButton.SECONDARY) {
-                            if(!f.isClicked) {
+                            if (!f.isClicked) {
                                 markFieldListener(f);
                                 System.out.println("marked");
                             }
@@ -86,19 +120,64 @@ public class PlayField {
     }
 
     private void defaultFieldListener(Field f) {
+
         if (!f.isClicked) {
-            f.isClicked = true;
-            if (f.isBomb == false) {
-                removeAllStyles(f);
-                f.getStyleClass().add("FieldButtonClicked");
-                f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
+//            f.isClicked = true;
+            if (!f.isBomb) {
+                turnNormalField(f);
+                fieldCounter++;
+                checkFieldArround(f);
+                System.out.println(f.getxPos() + " "+ f.getyPos());
+//                removeAllStyles(f);
+//                f.getStyleClass().add("FieldButtonClicked");
+//                f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
             } else {
                 removeAllStyles(f);
                 f.getStyleClass().add("FieldBomb");
                 launcher.finished(false);
             }
-            fieldCounter++;
-            checkIfGameHasToFinish();
+//            fieldCounter++;
+//            checkIfGameHasToFinish();
+        }
+    }
+
+    private void turnNormalField(Field f)
+    {
+        removeAllStyles(f);
+        f.getStyleClass().add("FieldButtonClicked");
+        f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
+    }
+
+    private void checkFieldArround(Field field)
+    {
+        List<Field> fields = new ArrayList<Field>();
+        fields.add(field);
+        ListIterator fieldIter = fields.listIterator();
+
+        while(fieldIter.hasNext())
+        {
+            Field actual = (Field)fieldIter.next();
+            ArrayList<Field> suroundingFields = getFieldsArround(actual);
+
+            for(Field f: suroundingFields)
+            {
+                if(f != null) {
+                    if (!f.isBomb) {
+                        if (!f.isClicked) {
+                            f.isClicked = true;
+                            fieldIter.add(f);
+                            turnNormalField(f);
+                            fieldCounter++;
+                            checkIfGameHasToFinish();
+                            System.out.println("OUT :" +fieldCounter + " " +generatedBombs);
+                        }
+
+                        if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
+                            fieldIter.add(f);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -178,8 +257,23 @@ public class PlayField {
         return back;
     }
 
-    private void removeAllStyles(Field field)
+    private ArrayList<Field> getFieldsArround(Field field)
     {
+        ArrayList<Field> list = new ArrayList<Field>();
+
+        list.add(getFieldByPosition(field.getxPos() + 1, field.getyPos() - 1));
+        list.add(getFieldByPosition(field.getxPos() + 1, field.getyPos() + 1));
+        list.add(getFieldByPosition(field.getxPos(), field.getyPos() + 1));
+        list.add(getFieldByPosition(field.getxPos() - 1, field.getyPos() + 1));
+        list.add(getFieldByPosition(field.getxPos() - 1, field.getyPos()));
+        list.add(getFieldByPosition(field.getxPos() - 1, field.getyPos() - 1));
+        list.add(getFieldByPosition(field.getxPos(), field.getyPos() - 1));
+        list.add(getFieldByPosition(field.getxPos() + 1, field.getyPos()));
+
+        return list;
+    }
+
+    private void removeAllStyles(Field field) {
         //field.getStyleClass().remove("FieldButtonNotClicked");
         field.getStyleClass().remove("FieldButtonClicked");
         field.getStyleClass().remove("FieldButtonMarked");

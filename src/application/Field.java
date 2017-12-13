@@ -23,7 +23,7 @@ public class Field extends Button {
     }
 
     public int getxPos() {
-        return xPos;
+            return xPos;
     }
 
     public void setxPos(int xPos) {
