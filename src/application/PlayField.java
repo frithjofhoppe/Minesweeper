@@ -170,7 +170,6 @@ public class PlayField {
                             if (!f.isClicked) {
                                 f.isClicked = true;
                                 turnNormalField(f);
-//                                fieldIter.add(f);
                                 fieldCounter++;
                                 checkIfGameHasToFinish();
                                 System.out.println("OUT :" + fieldCounter + " " + generatedBombs);
