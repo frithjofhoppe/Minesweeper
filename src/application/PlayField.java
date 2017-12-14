@@ -169,19 +169,19 @@ public class PlayField {
                         if (!f.isBomb) {
                             if (!f.isClicked) {
                                 f.isClicked = true;
-                                fieldIter.add(f);
                                 turnNormalField(f);
+//                                fieldIter.add(f);
                                 fieldCounter++;
                                 checkIfGameHasToFinish();
                                 System.out.println("OUT :" + fieldCounter + " " + generatedBombs);
-                            }
 
-                            if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
-                                fieldIter.add(f);
+                                if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
+                                    fieldIter.add(f);
+                                }
                             }
                         }
                     }
-                } 
+                }
                 b = 0;
             }
             if(fields.size() == 0)
