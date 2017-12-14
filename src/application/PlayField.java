@@ -181,7 +181,7 @@ public class PlayField {
                             }
                         }
                     }
-                }
+                } 
                 b = 0;
             }
             if(fields.size() == 0)
