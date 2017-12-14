@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import javax.swing.text.html.HTMLDocument;
 import java.util.*;
 
 public class PlayField {
@@ -152,31 +153,44 @@ public class PlayField {
     {
         List<Field> fields = new ArrayList<Field>();
         fields.add(field);
-        ListIterator fieldIter = fields.listIterator();
+        boolean isFinished = false;
+        while(!isFinished) {
+            ListIterator fieldIter = fields.listIterator();
+            int a = 0;
+            int b = 0;
+            while (fieldIter.hasNext()) {
+                Field actual = (Field) fieldIter.next();
+                ArrayList<Field> suroundingFields = getFieldsArround(actual);
+                a++;
+                fieldIter.remove();
+                for (Field f : suroundingFields) {
+                    b++;
+                    if (f != null) {
+                        if (!f.isBomb) {
+                            if (!f.isClicked) {
+                                f.isClicked = true;
+                                fieldIter.add(f);
+                                turnNormalField(f);
+                                fieldCounter++;
+                                checkIfGameHasToFinish();
+                                System.out.println("OUT :" + fieldCounter + " " + generatedBombs);
+                            }
 
-        while(fieldIter.hasNext())
-        {
-            Field actual = (Field)fieldIter.next();
-            ArrayList<Field> suroundingFields = getFieldsArround(actual);
-
-            for(Field f: suroundingFields)
-            {
-                if(f != null) {
-                    if (!f.isBomb) {
-                        if (!f.isClicked) {
-                            f.isClicked = true;
-                            fieldIter.add(f);
-                            turnNormalField(f);
-                            fieldCounter++;
-                            checkIfGameHasToFinish();
-                            System.out.println("OUT :" +fieldCounter + " " +generatedBombs);
-                        }
-
-                        if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
-                            fieldIter.add(f);
+                            if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
+                                fieldIter.add(f);
+                            }
                         }
                     }
                 }
+                b = 0;
+            }
+            if(fields.size() == 0)
+            {
+                isFinished = true;
+            }
+            else
+            {
+                System.out.println("SIZE != 0");
             }
         }
     }
