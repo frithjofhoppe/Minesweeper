@@ -52,7 +52,7 @@ public class JavaFXUI implements MineSweeper {
         primaryStage.sizeToScene();
         primaryStage.setTitle("Microsoft - MineSweeper");
         primaryStage.show();
-        Message.msgInformation("Welcome to minesweeper","Left-mouse-button: mark a field \nRight-mouse-button: open a field");
+        Message.msgInformation("Welcome to minesweeper","Right-mouse-button: mark a field \nLeft-mouse-button: open a field");
     }
 
     public void rebuild(int probability)

@@ -41,7 +41,7 @@ public class PlayField {
 
             for (int a = 0; a < count; a++) {
                 Field actual = getFieldByPosition(xPos, yPos);
-                if(actual != null) {
+                if (actual != null) {
                     if (!actual.isBomb) {
                         isAllTimeBomb = false;
                         actual.setText(Integer.toString(getBombCount(actual.getxPos(), actual.getyPos())));
@@ -123,38 +123,34 @@ public class PlayField {
     private void defaultFieldListener(Field f) {
 
         if (!f.isClicked) {
-//            f.isClicked = true;
             if (!f.isBomb) {
                 turnNormalField(f);
                 fieldCounter++;
-                checkFieldArround(f);
-                System.out.println(f.getxPos() + " "+ f.getyPos());
-//                removeAllStyles(f);
-//                f.getStyleClass().add("FieldButtonClicked");
-//                f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
+                if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
+                    checkFieldArround(f);
+                    System.out.println(f.getxPos() + " " + f.getyPos());
+                }
             } else {
                 removeAllStyles(f);
                 f.getStyleClass().add("FieldBomb");
                 launcher.finished(false);
             }
 //            fieldCounter++;
-//            checkIfGameHasToFinish();
+            checkIfGameHasToFinish();
         }
     }
 
-    private void turnNormalField(Field f)
-    {
+    private void turnNormalField(Field f) {
         removeAllStyles(f);
         f.getStyleClass().add("FieldButtonClicked");
         f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
     }
 
-    private void checkFieldArround(Field field)
-    {
+    private void checkFieldArround(Field field) {
         List<Field> fields = new ArrayList<Field>();
         fields.add(field);
         boolean isFinished = false;
-        while(!isFinished) {
+        while (!isFinished) {
             ListIterator fieldIter = fields.listIterator();
             int a = 0;
             int b = 0;
@@ -183,12 +179,9 @@ public class PlayField {
                 }
                 b = 0;
             }
-            if(fields.size() == 0)
-            {
+            if (fields.size() == 0) {
                 isFinished = true;
-            }
-            else
-            {
+            } else {
                 System.out.println("SIZE != 0");
             }
         }
@@ -270,8 +263,7 @@ public class PlayField {
         return back;
     }
 
-    private ArrayList<Field> getFieldsArround(Field field)
-    {
+    private ArrayList<Field> getFieldsArround(Field field) {
         ArrayList<Field> list = new ArrayList<Field>();
 
         list.add(getFieldByPosition(field.getxPos() + 1, field.getyPos() - 1));
