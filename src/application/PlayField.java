@@ -184,6 +184,7 @@ public class PlayField {
                 } 
                 b = 0;
             }
+            fieldIter.remove();
             if(fields.size() == 0)
             {
                 isFinished = true;
