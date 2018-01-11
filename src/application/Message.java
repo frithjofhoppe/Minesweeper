@@ -6,8 +6,22 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
+/**
+ * Represents a class which contains mutiple dilaogs to inform
+ * the user about the play/software status
+ *
+ * @author Frithjof Hoppe
+ * @version 1.0
+ */
 public class Message {
 
+    /**
+     * Opens a dialog which contains the requestion if the user
+     * wants to play the game agin. This is normally use after
+     * a lost or won game.
+     *
+     * @return: boolish value if the the user wants to play again
+     */
     public static boolean msgPlayAgain() {
         boolean back = false;
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
@@ -26,6 +40,11 @@ public class Message {
         return back;
     }
 
+    /**
+     * Opens a dialog which contains an exits request, which positiv
+     * cofirmation follows usually the end of the programm
+     * @return: boolisch balue if the user wants to exit out of the programm
+     */
     public static boolean msgExitRequest() {
         boolean back = false;
 
@@ -46,6 +65,12 @@ public class Message {
         return back;
     }
 
+    /**
+     * Shows a dialog which individually set header and maintext
+     *
+     * @param header: Header of the dialog
+     * @param textToShow: The text which is positioned in the middle of the dialog
+     */
     public static void msgInformation(String header, String textToShow) {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setTitle("Information");

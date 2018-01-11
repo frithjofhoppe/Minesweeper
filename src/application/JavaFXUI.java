@@ -1,5 +1,6 @@
 package application;
 
+import application.interfaces.MineSweeper;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 

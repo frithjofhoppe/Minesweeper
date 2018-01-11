@@ -1,16 +1,22 @@
 package application;
 
+import application.interfaces.MineSweeper;
 import com.sun.istack.internal.Nullable;
-import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.*;
 
+/**
+ * The Playfield represents an graphical construct which build off
+ * Fields capsuled in HBoxes.
+ *
+ * @author Frithjof Hoppe
+ * @version 1.0
+ */
 public class PlayField {
 
     MineSweeper launcher;
@@ -20,12 +26,23 @@ public class PlayField {
     int generatedBombs = 0;
     int fieldCounter = 0;
 
+    /**
+     * Constructor sets the practibility and assign playing field a new playfield
+     * @param launcher: VBox including HBoxes which represents the graphical playfield
+     * @param probability: Propaility how much bombs are set by the creation
+     *                   e.g 1:probaility. Each second element is a bomb
+     */
     public PlayField(MineSweeper launcher, int probability) {
         this.probability = probability;
         playingField = createPlayField(dimensionOfField, probability);
         this.launcher = launcher;
     }
 
+    /**
+     * Change the layout mode of a Field in the Playfield
+     * @param x: The x position in the playfield
+     * @param y The y position in the playfield
+     */
     private void openFields(int x, int y) {
         boolean isRunning = true;
         Field start = getFieldByPosition(x, y);
@@ -59,6 +76,12 @@ public class PlayField {
         }
     }
 
+    /**
+     * Creates a new graphical playfield build of Hboxes and Fields
+     * @param expansion: Count of the field expansion in the x and y-axis
+     * @param chance: As input-parameter is usally taken the probaility
+     * @return: VBox contais the playfield
+     */
     VBox createPlayField(int expansion, int chance) {
         VBox back = new VBox();
 
@@ -70,7 +93,7 @@ public class PlayField {
 
                 if (getRandomNumber(chance) == 1) {
                     f = new Field(true);
-                    f.setText("b");
+//                    f.setText("b");
                     generatedBombs++;
                 } else {
                     f = new Field(false);
@@ -102,11 +125,22 @@ public class PlayField {
         return back;
     }
 
+    /**
+     * Generat a random number
+     * @param max: The maximal possible size of the generated
+     *           random number
+     * @return
+     */
     public int getRandomNumber(int max) {
         Random rnd = new Random();
         return rnd.nextInt(max) + 1;
     }
 
+    /**
+     * The listener for a Field which is alredy marked.
+     * Means that the layout has changed
+     * @param f: The field which is marked
+     */
     private void markFieldListener(Field f) {
         if (!f.isMarked) {
             removeAllStyles(f);
@@ -120,16 +154,22 @@ public class PlayField {
         }
     }
 
+
+    /**
+     * The listener for a Field which is at the moment not marked
+     * @param f:
+     */
     private void defaultFieldListener(Field f) {
 
         if (!f.isClicked) {
             if (!f.isBomb) {
                 turnNormalField(f);
-                fieldCounter++;
+                f.isClicked = true;
                 if (getBombCount(f.getxPos(), f.getyPos()) == 0) {
                     checkFieldArround(f);
                     System.out.println(f.getxPos() + " " + f.getyPos());
                 }
+                fieldCounter++;
             } else {
                 removeAllStyles(f);
                 f.getStyleClass().add("FieldBomb");
@@ -140,12 +180,22 @@ public class PlayField {
         }
     }
 
+    /**
+     * Change the layout parameters of a field, so that the fields
+     * like turned
+     * @param f
+     */
     private void turnNormalField(Field f) {
         removeAllStyles(f);
         f.getStyleClass().add("FieldButtonClicked");
         f.setText(Integer.toString(getBombCount(f.getxPos(), f.getyPos())));
     }
 
+    /**
+     * Algorithm to turn the fiels which are located around the
+     * selectioned field, if some conditions are true
+     * @param field
+     */
     private void checkFieldArround(Field field) {
         List<Field> fields = new ArrayList<Field>();
         fields.add(field);
@@ -187,12 +237,19 @@ public class PlayField {
         }
     }
 
+    /**
+     * If the game has finish the parent is called to make some specific action
+     */
     private void checkIfGameHasToFinish() {
         if (isPlayFinished()) {
             launcher.finished(true);
         }
     }
 
+    /**
+     * Indicated if the enery possible Field which is not a bomb is turned
+     * @return
+     */
     private boolean isPlayFinished() {
         if (fieldCounter >= (dimensionOfField * dimensionOfField - generatedBombs)) {
             return true;
@@ -200,6 +257,12 @@ public class PlayField {
         return false;
     }
 
+    /**
+     * Find a Field by giving the position in the x- and y-axis as parameter
+     * @param x:
+     * @param y
+     * @return: If a Field at the specific position exists the object will be returned
+     */
     @Nullable
     private Field getFieldByPosition(int x, int y) {
         Field f;
@@ -223,6 +286,11 @@ public class PlayField {
         return playingField;
     }
 
+    /**
+     * Gets the HBox at the specfic index position
+     * @param index: position int the VBox where the HBox is located
+     * @return
+     */
     private HBox findRowByIndex(int index) {
         try {
             HBox test = (HBox) playingField.getChildren().get(index);
@@ -237,6 +305,12 @@ public class PlayField {
 
     }
 
+    /**
+     * Determine if the Field at the specific position is a bomb
+     * @param x
+     * @param y
+     * @return: Boolish value if the Field is a bomb
+     */
     private int isBomb(int x, int y) {
         Field f = getFieldByPosition(x, y);
         if (f != null) {
@@ -248,6 +322,13 @@ public class PlayField {
         return 0;
     }
 
+    /**
+     * Get the numbers of bombs which are located one Field arround the
+     * denoted Field
+     * @param x
+     * @param y
+     * @return: Numbers of fields
+     */
     private int getBombCount(int x, int y) {
         int back = 0;
 
@@ -263,6 +344,11 @@ public class PlayField {
         return back;
     }
 
+    /**
+     * Get the fields arround the denoted field
+     * @param field
+     * @return: List of field which surround the input field
+     */
     private ArrayList<Field> getFieldsArround(Field field) {
         ArrayList<Field> list = new ArrayList<Field>();
 
@@ -278,6 +364,10 @@ public class PlayField {
         return list;
     }
 
+    /**
+     * Remove every graphical style from a field
+     * @param field
+     */
     private void removeAllStyles(Field field) {
         //field.getStyleClass().remove("FieldButtonNotClicked");
         field.getStyleClass().remove("FieldButtonClicked");
